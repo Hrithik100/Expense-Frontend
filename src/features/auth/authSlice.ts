@@ -57,21 +57,16 @@ export const restoreSession = createAsyncThunk(
   "auth/restore",
   async (_, { rejectWithValue }) => {
     try {
-      let token: string;
+      const response = await api.post("/auth/refresh");
 
-      try {
-        const r = await api.post("/auth/refresh");
-        token = r.data.accessToken;
-        setAccessToken(token);
-      } catch {
-        setAccessToken(null);
-        throw new Error("No session");
-      }
+      const token = response.data.accessToken;
+      setAccessToken(token);
 
       const me = await api.get("/auth/me");
 
       return me.data.user as User;
     } catch {
+      setAccessToken(null);
       return rejectWithValue("No active session");
     }
   }
