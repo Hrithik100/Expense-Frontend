@@ -146,11 +146,19 @@ const slice = createSlice({
       });
 
     // LOGOUT
-    builder.addCase(logout.fulfilled, (state) => {
-      state.status = "unauthenticated";
-      state.user = null;
-      state.error = null;
-    });
+  builder
+  .addCase(logout.fulfilled, (state) => {
+    state.status = "unauthenticated";
+    state.user = null;
+    state.error = null;
+    state.initialized = true;
+  })
+  .addCase(logout.rejected, (state) => {
+    state.status = "unauthenticated";
+    state.user = null;
+    state.error = null;
+    state.initialized = true;
+  });
   },
 });
 

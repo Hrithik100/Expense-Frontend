@@ -18,6 +18,7 @@ export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
+// Attach access token to requests
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -26,43 +27,56 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Handle expired access tokens
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config;
 
+    const isAuthRequest = String(original?.url || "").includes(
+      "/auth/"
+    );
+
     if (
-      error.response?.status === 401 &&
-      original &&
-      !original._retry &&
-      !String(original.url).includes("/auth/")
+      error.response?.status !== 401 ||
+      !original ||
+      original._retry ||
+      isAuthRequest
     ) {
-      original._retry = true;
-
-      if (!refreshPromise) {
-        refreshPromise = api
-          .post("/auth/refresh", {})
-          .then((response) => {
-            accessToken = response.data.accessToken;
-            return accessToken;
-          })
-          .catch(() => {
-            accessToken = null;
-            return null;
-          })
-          .finally(() => {
-            refreshPromise = null;
-          });
-      }
-
-      const token = await refreshPromise;
-
-      if (token) {
-        original.headers.Authorization = `Bearer ${token}`;
-        return api(original);
-      }
+      return Promise.reject(error);
     }
 
+    original._retry = true;
+
+    // Share one refresh request across concurrent API failures
+    if (!refreshPromise) {
+      refreshPromise = api
+        .post("/auth/refresh", {})
+        .then((response) => {
+          const token = response.data.accessToken;
+          setAccessToken(token);
+          return token;
+        })
+        .catch(() => {
+          setAccessToken(null);
+          return null;
+        })
+        .finally(() => {
+          refreshPromise = null;
+        });
+    }
+
+    const token = await refreshPromise;
+
+    if (token) {
+      original.headers = original.headers || {};
+      original.headers.Authorization = `Bearer ${token}`;
+
+      return api(original);
+    }
+
+    setAccessToken(null);
+
     return Promise.reject(error);
-  },
+  }
 );
