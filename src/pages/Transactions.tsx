@@ -48,7 +48,7 @@ export default function Transactions() {
   const [type, setType] = useState("all");
   const [search, setSearch] = useState("");
 
-  const [modal, setModal] = useState(params.get("new") === "1");
+  const [modal, setModal] = useState(false);
   const [editing, setEditing] = useState<Transaction | null>(null);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -88,6 +88,27 @@ export default function Transactions() {
   useEffect(() => {
     reload();
   }, [dispatch, month, type, search]);
+
+  useEffect(() => {
+    if (params.get("new") === "1") {
+      setEditing(null);
+
+      setForm({
+        type: "expense",
+        amount: "",
+        categoryId: "",
+        date: new Date().toISOString().slice(0, 10),
+        description: "",
+      });
+
+      setModal(true);
+
+      const nextParams = new URLSearchParams(params);
+      nextParams.delete("new");
+
+      setParams(nextParams, { replace: true });
+    }
+  }, [params, setParams]);
 
   const openNew = () => {
     setEditing(null);

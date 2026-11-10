@@ -50,11 +50,14 @@ export default function Shell() {
     <div className="min-h-screen bg-(--bg) text-(--text)">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 flex w-62 flex-col border-r border-(--border) bg-(--surface) px-4.25 pt-6.5 pb-4.5 transition-transform duration-220 ease-in-out max-[760px]:w-[min(290px,85vw)] max-[760px]:translate-x-[-102%] max-[760px]:shadow-none ${
-          open
-            ? "max-[760px]:translate-x-0 max-[760px]:shadow-[10px_0_50px_#0002]"
-            : ""
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-62 flex-col border-r border-(--border) bg-(--surface) px-4.25 pt-6.5 pb-4.5 shadow-none transition-transform duration-300 ease-in-out
+  max-[760px]:w-[min(290px,85vw)]
+  max-[760px]:-translate-x-full
+  ${
+    open
+      ? "max-[760px]:translate-x-0 max-[760px]:shadow-[10px_0_50px_#0002]"
+      : ""
+  }`}
       >
         {/* Brand */}
         <div className="flex items-center gap-2.5 px-2.5 pb-10.5 text-[22px] font-extrabold tracking-[-1px]">
@@ -124,7 +127,6 @@ export default function Shell() {
             <span>Switch to {mode === "light" ? "dark" : "light"} mode</span>
           </button>
 
-    
           <button
             type="button"
             onClick={signOut}
@@ -142,7 +144,7 @@ export default function Shell() {
           type="button"
           aria-label="Close navigation overlay"
           onClick={() => setOpen(false)}
-          className="fixed inset-0 z-25 hidden border-0 bg-[#10181570] min-[761px]:hidden max-[760px]:block"
+          className="fixed inset-0 z-40 border-0 bg-[#10181570] min-[761px]:hidden"
         />
       )}
 
