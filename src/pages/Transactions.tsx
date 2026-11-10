@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Plus,
   Search,
@@ -19,6 +19,8 @@ import {
 } from "../features/transactions/transactionSlice";
 
 import type { Transaction } from "../types";
+import FeedbackModal from "../components/FeedbackModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 const monthNow = () => {
   const now = new Date();
@@ -50,6 +52,18 @@ export default function Transactions() {
   const [editing, setEditing] = useState<Transaction | null>(null);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const [feedback, setFeedback] = useState<{
+    type: "success" | "error";
+    title: string;
+    message: string;
+  } | null>(null);
+
+  const closeFeedback = useCallback(() => {
+    setFeedback(null);
+  }, []);
+
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   const [form, setForm] = useState({
     type: "expense" as "expense" | "income",
@@ -112,9 +126,11 @@ export default function Transactions() {
     setModal(true);
   };
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
+
+    const isEditing = Boolean(editing);
 
     try {
       await dispatch(
@@ -131,24 +147,64 @@ export default function Transactions() {
       setModal(false);
       setEditing(null);
       setParams({});
+
       reload();
-    } catch {
-      alert("Could not save transaction. Check the details and try again.");
+
+      setFeedback({
+        type: "success",
+        title: isEditing ? "Transaction updated!" : "Transaction added!",
+        message: isEditing
+          ? "Your transaction has been updated successfully."
+          : "Your new transaction has been added successfully.",
+      });
+    } catch (error) {
+      setFeedback({
+        type: "error",
+        title: isEditing ? "Update failed!" : "Unable to add transaction",
+        message:
+          typeof error === "string"
+            ? error
+            : "Something went wrong. Please check your details and try again.",
+      });
     } finally {
       setSaving(false);
     }
   };
 
-  const remove = async (id: number) => {
-    if (!confirm("Delete this transaction?")) return;
+  const remove = (id: number) => {
+    setConfirmDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (confirmDeleteId === null) return;
+
+    const id = confirmDeleteId;
 
     setDeletingId(id);
 
     try {
       await dispatch(deleteTransaction(id)).unwrap();
+
+      setConfirmDeleteId(null);
+
       reload();
-    } catch {
-      alert("Could not delete transaction. Please try again.");
+
+      setFeedback({
+        type: "success",
+        title: "Transaction deleted!",
+        message: "Your transaction has been deleted successfully.",
+      });
+    } catch (error) {
+      setConfirmDeleteId(null);
+
+      setFeedback({
+        type: "error",
+        title: "Delete failed!",
+        message:
+          typeof error === "string"
+            ? error
+            : "Could not delete this transaction. Please try again.",
+      });
     } finally {
       setDeletingId(null);
     }
@@ -223,7 +279,7 @@ export default function Transactions() {
 
         {/* Desktop table */}
         <div className="hidden overflow-x-auto sm:block">
-          <table className="w-full min-w-[620px] border-collapse text-left whitespace-nowrap">
+          <table className="w-full min-w-155 border-collapse text-left whitespace-nowrap">
             <thead>
               <tr>
                 <th className="bg-(--surface-2) px-3 py-3.25 text-[10px] font-bold text-(--muted)">
@@ -264,7 +320,7 @@ export default function Transactions() {
                       </span>
 
                       <div className="grid min-w-0 gap-1">
-                        <strong className="max-w-[220px] truncate text-[11px] font-semibold text-(--text)">
+                        <strong className="max-w-55 truncate text-[11px] font-semibold text-(--text)">
                           {t.description || t.category || "Transaction"}
                         </strong>
                         <small className="text-[10px] text-(--muted)">
@@ -626,6 +682,25 @@ export default function Transactions() {
             </form>
           </section>
         </div>
+      )}
+
+      {confirmDeleteId !== null && (
+        <ConfirmModal
+          title="Delete transaction?"
+          message="Are you sure you want to delete this transaction? This action cannot be undone."
+          loading={deletingId === confirmDeleteId}
+          onCancel={() => setConfirmDeleteId(null)}
+          onConfirm={confirmDelete}
+        />
+      )}
+
+      {feedback && (
+        <FeedbackModal
+          type={feedback.type}
+          title={feedback.title}
+          message={feedback.message}
+          onClose={closeFeedback}
+        />
       )}
     </div>
   );

@@ -428,7 +428,7 @@ function CategorySection({
               <h3 className="font-semibold text-(--text)">{category.name}</h3>
 
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-md bg-(--surface-2) px-2.5 py-1 text-xs font-medium text-[var(--muted)]">
+                <span className="rounded-md bg-(--surface-2) px-2.5 py-1 text-xs font-medium text-(--muted)">
                   {getTypeLabel(category.type)}
                 </span>
 
