@@ -16,6 +16,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Transactions = lazy(() => import("./pages/Transactions"));
 const Budgets = lazy(() => import("./pages/Budgets"));
 const Categories = lazy(() => import("./pages/Categories"));
+const DailyExpenses = lazy(() => import("./pages/DailyExpenses"));
 
 function PageLoader() {
   return (
@@ -86,6 +87,7 @@ function AppRoutes() {
           <Route path="transactions" element={<Transactions />} />
           <Route path="budgets" element={<Budgets />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="daily-expenses" element={<DailyExpenses />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

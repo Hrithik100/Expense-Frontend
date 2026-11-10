@@ -12,6 +12,7 @@ import {
   LogOut,
   Plus,
   Tag,
+  CalendarDays
 } from "lucide-react";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -23,6 +24,7 @@ const nav = [
   { to: "/transactions", label: "Transactions", icon: Receipt },
   { to: "/budgets", label: "Budgets", icon: Wallet },
   { to: "/categories", label: "Categories", icon: Tag },
+  { to: "/daily-expenses", label: "Daily Expenses", icon: CalendarDays },
 ];
 
 export default function Shell() {
