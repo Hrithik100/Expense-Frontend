@@ -122,7 +122,6 @@ export default function Transactions() {
     });
 
     setModal(true);
-    setParams({ new: "1" });
   };
 
   const close = () => {
