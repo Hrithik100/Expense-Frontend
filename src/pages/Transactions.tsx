@@ -73,12 +73,21 @@ export default function Transactions() {
     description: "",
   });
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const totalTransactions = useAppSelector((s) => s.data.totalTransactions);
+
+  const totalPages = Math.max(1, Math.ceil(totalTransactions / limit));
+
   const reload = () => {
     dispatch(
       loadTransactions({
         month,
         type: type === "all" ? undefined : type,
         search,
+        page,
+        limit,
       }),
     );
 
@@ -86,8 +95,12 @@ export default function Transactions() {
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [month, type, search]);
+
+  useEffect(() => {
     reload();
-  }, [dispatch, month, type, search]);
+  }, [dispatch, month, type, search, page]);
 
   useEffect(() => {
     if (params.get("new") === "1") {
@@ -506,26 +519,44 @@ export default function Transactions() {
           ))}
         </div>
 
-        {items.length === 0 && (
-          <div className="flex min-h-45 flex-col items-center justify-center gap-2.5 px-5 py-5 text-center text-[11px] text-(--muted)">
-            <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-(--surface-2)">
-              <Search size={20} />
+        {items.length > 0 && (
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-(--border) pt-4">
+            <p className="text-xs text-(--muted)">
+              Showing{" "}
+              <strong className="text-(--text)">
+                {(page - 1) * limit + 1}
+              </strong>{" "}
+              to{" "}
+              <strong className="text-(--text)">
+                {Math.min(page * limit, totalTransactions)}
+              </strong>{" "}
+              of <strong className="text-(--text)">{totalTransactions}</strong>{" "}
+              transactions
+            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="rounded-lg border border-(--border) px-3 py-2 text-xs font-semibold text-(--text) disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Previous
+              </button>
+
+              <span className="text-xs font-semibold text-(--text)">
+                {page} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="rounded-lg border border-(--border) px-3 py-2 text-xs font-semibold text-(--text) disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Next
+              </button>
             </div>
-
-            <strong className="text-[13px] text-(--text)">
-              No transactions found
-            </strong>
-
-            <span>Try a different search or add a new transaction.</span>
-
-            <button
-              type="button"
-              onClick={openNew}
-              className="mt-1 inline-flex items-center justify-center gap-2 rounded-[9px] border border-(--border) bg-(--surface) px-3.75 py-2.75 text-xs font-bold text-(--text)"
-            >
-              <Plus size={16} />
-              Add transaction
-            </button>
           </div>
         )}
       </section>

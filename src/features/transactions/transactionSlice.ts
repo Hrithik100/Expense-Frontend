@@ -7,6 +7,7 @@ type State = {
   dashboard: Dashboard | null;
   loading: boolean;
   error: string | null;
+  totalTransactions: number;
 };
 const initialState: State = {
   items: [],
@@ -14,6 +15,7 @@ const initialState: State = {
   dashboard: null,
   loading: false,
   error: null,
+  totalTransactions: 0,
 };
 export const loadDashboard = createAsyncThunk(
   "data/dashboard",
@@ -32,8 +34,21 @@ export const loadTransactions = createAsyncThunk(
     type?: string;
     search?: string;
     page?: number;
-  }) =>
-    (await api.get("/transactions", { params })).data.items as Transaction[],
+    limit?: number;
+  }) => {
+    const response = await api.get("/transactions", {
+      params: {
+        ...params,
+        page: params.page || 1,
+        limit: params.limit || 10,
+      },
+    });
+
+    return {
+      items: response.data.items as Transaction[],
+      total: Number(response.data.total),
+    };
+  },
 );
 export const saveTransaction = createAsyncThunk(
   "data/save",
@@ -82,7 +97,8 @@ const slice = createSlice({
         s.error = a.error.message || "Unable to load dashboard";
       });
     b.addCase(loadTransactions.fulfilled, (s, a) => {
-      s.items = a.payload;
+      s.items = a.payload.items;
+      s.totalTransactions = a.payload.total;
     })
       .addCase(saveTransaction.fulfilled, (s) => {
         s.error = null;
