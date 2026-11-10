@@ -221,26 +221,23 @@ export default function Transactions() {
           />
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-155 border-collapse text-left whitespace-nowrap">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto sm:block">
+          <table className="w-full min-w-[620px] border-collapse text-left whitespace-nowrap">
             <thead>
               <tr>
                 <th className="bg-(--surface-2) px-3 py-3.25 text-[10px] font-bold text-(--muted)">
                   Transaction
                 </th>
-
                 <th className="bg-(--surface-2) px-3 py-3.25 text-[10px] font-bold text-(--muted)">
                   Category
                 </th>
-
                 <th className="bg-(--surface-2) px-3 py-3.25 text-[10px] font-bold text-(--muted)">
                   Date
                 </th>
-
                 <th className="bg-(--surface-2) px-3 py-3.25 text-[10px] font-bold text-(--muted)">
                   Amount
                 </th>
-
                 <th className="bg-(--surface-2) px-3 py-3.25 text-right text-[10px] font-bold text-(--muted)">
                   <span className="sr-only">Actions</span>
                 </th>
@@ -248,132 +245,213 @@ export default function Transactions() {
             </thead>
 
             <tbody>
-              {items.map((t) => {
-                const categoryColor = t.color || "#94a3b8";
-
-                return (
-                  <tr
-                    key={t.id}
-                    className="transition hover:bg-(--surface-2)/50"
-                  >
-                    {/* Transaction */}
-                    <td className="border-b border-(--border) px-3 py-3.5 text-[11px]">
-                      <div className="flex items-center gap-2.5">
-                        <span
-                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-[9px] ${
-                            t.type === "income"
-                              ? "bg-[#def8eb] text-[#0d9b70]"
-                              : "bg-[#fff0e5] text-[#e38b3e]"
-                          }`}
-                        >
-                          {t.type === "income" ? (
-                            <ArrowDownLeft size={17} />
-                          ) : (
-                            <ArrowUpRight size={17} />
-                          )}
-                        </span>
-
-                        <div className="grid gap-1">
-                          <strong className="text-[11px] font-semibold text-(--text)">
-                            {t.description || t.category || "Transaction"}
-                          </strong>
-
-                          <small className="text-[10px] text-(--muted)">
-                            {t.type === "income" ? "Income" : "Expense"}
-                          </small>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="border-b border-(--border) px-3 py-3.5 text-[11px]">
-                      <span className="inline-flex items-center gap-1.75 text-(--muted)">
-                        <i
-                          className="inline-block h-2 w-2 rounded-full"
-                          style={{
-                            background: categoryColor,
-                          }}
-                        />
-
-                        {t.category || "Uncategorized"}
+              {items.map((t) => (
+                <tr key={t.id} className="transition hover:bg-(--surface-2)/50">
+                  <td className="border-b border-(--border) px-3 py-3.5 text-[11px]">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-[9px] ${
+                          t.type === "income"
+                            ? "bg-[#def8eb] text-[#0d9b70]"
+                            : "bg-[#fff0e5] text-[#e38b3e]"
+                        }`}
+                      >
+                        {t.type === "income" ? (
+                          <ArrowDownLeft size={17} />
+                        ) : (
+                          <ArrowUpRight size={17} />
+                        )}
                       </span>
-                    </td>
 
-                    <td className="border-b border-(--border) px-3 py-3.5 text-[11px] text-(--muted)">
-                      {new Date(`${t.date}T12:00:00`).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        },
-                      )}
-                    </td>
-
-                    <td
-                      className={`border-b border-(--border) px-3 py-3.5 text-[11px] font-semibold ${
-                        t.type === "income" ? "text-[#0d9b70]" : "text-(--text)"
-                      }`}
-                    >
-                      {t.type === "income" ? "+" : "−"}
-                      {money(t.amount)}
-                    </td>
-
-                    <td className="border-b border-(--border) px-3 py-3.5">
-                      <div className="flex items-center justify-end gap-1.25">
-                        <button
-                          type="button"
-                          onClick={() => edit(t)}
-                          disabled={deletingId === t.id}
-                          className="rounded-md border-0 bg-transparent px-1.5 py-1.5 text-[10px] text-(--muted) transition hover:bg-(--surface-2) hover:text-(--text)"
-                          aria-label="Edit transaction"
-                        >
-                          Edit
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => remove(t.id)}
-                          disabled={deletingId === t.id}
-                          className="rounded-md border-0 bg-transparent p-1.5 text-(--muted) transition hover:bg-(--surface-2) hover:text-[#e35b5b]"
-                          aria-label="Delete transaction"
-                        >
-                          {deletingId === t.id ? (
-                            <Loader2 size={16} className="animate-spin" />
-                          ) : (
-                            <Trash2 size={16} />
-                          )}
-                        </button>
+                      <div className="grid min-w-0 gap-1">
+                        <strong className="max-w-[220px] truncate text-[11px] font-semibold text-(--text)">
+                          {t.description || t.category || "Transaction"}
+                        </strong>
+                        <small className="text-[10px] text-(--muted)">
+                          {t.type === "income" ? "Income" : "Expense"}
+                        </small>
                       </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </div>
+                  </td>
+
+                  <td className="border-b border-(--border) px-3 py-3.5 text-[11px]">
+                    <span className="inline-flex items-center gap-1.75 text-(--muted)">
+                      <i
+                        className="inline-block h-2 w-2 rounded-full"
+                        style={{ background: t.color || "#94a3b8" }}
+                      />
+                      {t.category || "Uncategorized"}
+                    </span>
+                  </td>
+
+                  <td className="border-b border-(--border) px-3 py-3.5 text-[11px] text-(--muted)">
+                    {new Date(`${t.date}T12:00:00`).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      },
+                    )}
+                  </td>
+
+                  <td
+                    className={`border-b border-(--border) px-3 py-3.5 text-[11px] font-semibold ${
+                      t.type === "income" ? "text-[#0d9b70]" : "text-(--text)"
+                    }`}
+                  >
+                    {t.type === "income" ? "+" : "−"}
+                    {money(t.amount)}
+                  </td>
+
+                  <td className="border-b border-(--border) px-3 py-3.5">
+                    <div className="flex items-center justify-end gap-1.25">
+                      <button
+                        type="button"
+                        onClick={() => edit(t)}
+                        disabled={deletingId === t.id}
+                        className="rounded-md px-1.5 py-1.5 text-[10px] text-(--muted) transition hover:bg-(--surface-2) hover:text-(--text)"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => remove(t.id)}
+                        disabled={deletingId === t.id}
+                        aria-label="Delete transaction"
+                        className="rounded-md p-1.5 text-(--muted) transition hover:bg-(--surface-2) hover:text-[#e35b5b]"
+                      >
+                        {deletingId === t.id ? (
+                          <Loader2 size={16} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={16} />
+                        )}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+        </div>
 
-          {items.length === 0 && (
-            <div className="flex min-h-45 flex-col items-center justify-center gap-2.5 px-5 py-5 text-center text-[11px] text-(--muted)">
-              <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-(--surface-2)">
-                <Search size={20} />
+        {/* Mobile transaction cards */}
+        <div className="grid gap-3 sm:hidden">
+          {items.map((t) => (
+            <div
+              key={t.id}
+              className="min-w-0 rounded-xl border border-(--border) bg-(--surface) p-3.5"
+            >
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-[9px] ${
+                      t.type === "income"
+                        ? "bg-[#def8eb] text-[#0d9b70]"
+                        : "bg-[#fff0e5] text-[#e38b3e]"
+                    }`}
+                  >
+                    {t.type === "income" ? (
+                      <ArrowDownLeft size={18} />
+                    ) : (
+                      <ArrowUpRight size={18} />
+                    )}
+                  </span>
+
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-semibold text-(--text)">
+                      {t.description || t.category || "Transaction"}
+                    </p>
+                    <p className="mt-1 text-[10px] text-(--muted)">
+                      {t.type === "income" ? "Income" : "Expense"}
+                    </p>
+                  </div>
+                </div>
+
+                <p
+                  className={`shrink-0 text-xs font-bold ${
+                    t.type === "income" ? "text-[#0d9b70]" : "text-(--text)"
+                  }`}
+                >
+                  {t.type === "income" ? "+" : "−"}
+                  {money(t.amount)}
+                </p>
               </div>
 
-              <strong className="text-[13px] text-(--text)">
-                No transactions found
-              </strong>
+              <div className="mt-3 flex min-w-0 items-center justify-between gap-2 border-t border-(--border) pt-3">
+                <div className="min-w-0">
+                  <p className="truncate text-[10px] text-(--muted)">
+                    <span
+                      className="mr-1.5 inline-block h-2 w-2 rounded-full"
+                      style={{ background: t.color || "#94a3b8" }}
+                    />
+                    {t.category || "Uncategorized"}
+                  </p>
 
-              <span>Try a different search or add a new transaction.</span>
+                  <p className="mt-1 text-[10px] text-(--muted)">
+                    {new Date(`${t.date}T12:00:00`).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      },
+                    )}
+                  </p>
+                </div>
 
-              <button
-                type="button"
-                onClick={openNew}
-                className="mt-1 inline-flex items-center justify-center gap-2 rounded-[9px] border border-(--border) bg-(--surface) px-3.75 py-2.75 text-xs font-bold text-(--text) transition hover:bg-[var(--surface-2)]"
-              >
-                <Plus size={16} />
-                Add transaction
-              </button>
+                <div className="flex shrink-0 items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => edit(t)}
+                    disabled={deletingId === t.id}
+                    className="rounded-md border border-(--border) px-3 py-1.5 text-[10px] font-semibold text-(--text)"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => remove(t.id)}
+                    disabled={deletingId === t.id}
+                    aria-label="Delete transaction"
+                    className="rounded-md border border-(--border) p-1.5 text-(--muted)"
+                  >
+                    {deletingId === t.id ? (
+                      <Loader2 size={15} className="animate-spin" />
+                    ) : (
+                      <Trash2 size={15} />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
+
+        {items.length === 0 && (
+          <div className="flex min-h-45 flex-col items-center justify-center gap-2.5 px-5 py-5 text-center text-[11px] text-(--muted)">
+            <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-(--surface-2)">
+              <Search size={20} />
+            </div>
+
+            <strong className="text-[13px] text-(--text)">
+              No transactions found
+            </strong>
+
+            <span>Try a different search or add a new transaction.</span>
+
+            <button
+              type="button"
+              onClick={openNew}
+              className="mt-1 inline-flex items-center justify-center gap-2 rounded-[9px] border border-(--border) bg-(--surface) px-3.75 py-2.75 text-xs font-bold text-(--text)"
+            >
+              <Plus size={16} />
+              Add transaction
+            </button>
+          </div>
+        )}
       </section>
 
       {modal && (
