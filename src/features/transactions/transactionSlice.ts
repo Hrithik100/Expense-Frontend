@@ -8,6 +8,7 @@ type State = {
   loading: boolean;
   error: string | null;
   totalTransactions: number;
+  revision: number;
 };
 const initialState: State = {
   items: [],
@@ -16,6 +17,7 @@ const initialState: State = {
   loading: false,
   error: null,
   totalTransactions: 0,
+  revision: 0,
 };
 export const loadDashboard = createAsyncThunk(
   "data/dashboard",
@@ -102,9 +104,11 @@ const slice = createSlice({
     })
       .addCase(saveTransaction.fulfilled, (s) => {
         s.error = null;
+        s.revision += 1;
       })
       .addCase(deleteTransaction.fulfilled, (s, a) => {
         s.items = s.items.filter((t) => t.id !== a.payload);
+        s.revision += 1;
       });
   },
 });

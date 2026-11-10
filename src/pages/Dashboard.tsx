@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { loadDashboard } from "../features/transactions/transactionSlice";
+import DailySpendingAllowance from "../components/DailySpendingAllowance";
 
 const money = (n: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -132,6 +133,8 @@ export default function Dashboard() {
           tone="blue"
         />
       </section>
+
+      <DailySpendingAllowance />
 
       <section className="grid grid-cols-1 xl:grid-cols-[1.35fr_0.85fr] gap-4.5">
         <div className="min-w-0 rounded-[14px] border border-(--border) bg-(--surface) p-5 sm:p-5.5 shadow-(--shadow)">
