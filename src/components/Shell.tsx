@@ -50,7 +50,7 @@ export default function Shell() {
 
   return (
     <div className="min-h-screen bg-(--bg) text-(--text)">
-      {/* Sidebar */}
+     
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-62 flex-col border-r border-(--border) bg-(--surface) px-4.25 pt-6.5 pb-4.5 shadow-none transition-transform duration-300 ease-in-out
   max-[760px]:w-[min(290px,85vw)]
@@ -61,7 +61,7 @@ export default function Shell() {
       : ""
   }`}
       >
-        {/* Brand */}
+      
         <div className="flex items-center gap-2.5 px-2.5 pb-10.5 text-[22px] font-extrabold tracking-[-1px]">
           <span className="grid h-8.75 w-8.75 shrink-0 place-items-center rounded-[11px] bg-[#d9f7eb] text-[#087f60]">
             <ChartNoAxesCombined size={21} />
@@ -79,12 +79,12 @@ export default function Shell() {
           </button>
         </div>
 
-        {/* Navigation heading */}
+       
         <p className="mb-3 px-3 text-[10px] font-extrabold tracking-[1.35px] text-(--muted)">
           WORKSPACE
         </p>
 
-        {/* Navigation links */}
+   
         <nav className="grid gap-1.25">
           {nav.map((n) => (
             <NavLink
@@ -100,7 +100,7 @@ export default function Shell() {
           ))}
         </nav>
 
-        {/* Sidebar bottom */}
+     
         <div className="mt-auto grid gap-1.25">
           {/* User profile */}
           <div className="mb-2 flex items-center gap-2.5 border-t border-(--border) px-2 pt-3.5 pb-3.5">
@@ -140,7 +140,7 @@ export default function Shell() {
         </div>
       </aside>
 
-      {/* Mobile sidebar overlay */}
+    
       {open && (
         <button
           type="button"
@@ -150,7 +150,7 @@ export default function Shell() {
         />
       )}
 
-      {/* Main area */}
+      
       <main className="ml-62 min-h-screen max-[760px]:ml-0">
         {/* Topbar */}
         <header className="flex h-22.75 items-center justify-between gap-4 border-b border-(--border) bg-(--surface) px-9.5 max-[1200px]:px-6 max-[760px]:h-18.5 max-[760px]:justify-start max-[760px]:gap-2.25 max-[760px]:px-2.75">
@@ -164,7 +164,7 @@ export default function Shell() {
             <Menu size={20} />
           </button>
 
-          {/* Greeting */}
+      
           <div className="min-w-0 max-[760px]:flex-1">
             <div className="text-[10px] font-extrabold tracking-[1.35px] text-(--muted) max-[760px]:text-[8px]">
               YOUR FINANCIAL SPACE
@@ -175,7 +175,7 @@ export default function Shell() {
             </div>
           </div>
 
-          {/* Topbar actions */}
+       
           <div className="flex shrink-0 items-center gap-3 max-[760px]:gap-1.75">
             {/* Mobile theme toggle */}
             <button
@@ -187,7 +187,7 @@ export default function Shell() {
               {mode === "light" ? <Moon size={18} /> : <Sun size={18} />}
             </button>
 
-            {/* Add transaction */}
+            
             <button
               type="button"
               onClick={() => navigate("/transactions?new=1")}
@@ -200,7 +200,7 @@ export default function Shell() {
           </div>
         </header>
 
-        {/* Page content */}
+      
         <div className="mx-auto w-full max-w-[1550px] px-9.5 pt-8 pb-12 max-[1500px]:px-6 max-[1200px]:pt-6.5 max-[1200px]:pb-9.5 max-[760px]:px-4 max-[760px]:pt-5.75 max-[760px]:pb-8.75 max-[380px]:px-3">
           <Outlet />
         </div>

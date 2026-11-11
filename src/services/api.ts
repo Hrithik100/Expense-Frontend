@@ -18,7 +18,7 @@ export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
-// Attach access token to requests
+
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -27,7 +27,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle expired access tokens
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -48,7 +48,7 @@ api.interceptors.response.use(
 
     original._retry = true;
 
-    // Share one refresh request across concurrent API failures
+    
     if (!refreshPromise) {
       refreshPromise = api
         .post("/auth/refresh", {})

@@ -74,19 +74,19 @@ export default function CategoryModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="category-modal-title"
-        className="my-auto w-full max-w-md overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl"
+        className="my-auto w-full max-w-md overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-[var(--border)] px-6 py-5">
+        <div className="flex items-start justify-between border-b border-(--border) px-6 py-5">
           <div>
             <h2
               id="category-modal-title"
-              className="text-lg font-bold text-[var(--text)]"
+              className="text-lg font-bold text-(--text)"
             >
               {category ? "Edit category" : "Add category"}
             </h2>
 
-            <p className="mt-1 text-sm text-[var(--muted)]">
+            <p className="mt-1 text-sm text-(--muted)">
               {category
                 ? "Update your category details."
                 : "Create a category to organize your finances."}
@@ -98,7 +98,7 @@ export default function CategoryModal({
             onClick={onClose}
             disabled={saving}
             aria-label="Close modal"
-            className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[var(--surface-2)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg p-2 text-(--muted) transition hover:bg-(--surface-2) hover:text-(--text) disabled:cursor-not-allowed disabled:opacity-50"
           >
             <X size={20} />
           </button>
@@ -110,7 +110,7 @@ export default function CategoryModal({
           <div className="space-y-2">
             <label
               htmlFor="category-name"
-              className="block text-sm font-semibold text-[var(--text)]"
+              className="block text-sm font-semibold text-(--text)"
             >
               Category name
             </label>
@@ -128,16 +128,16 @@ export default function CategoryModal({
               className={inputClasses}
             />
 
-            <p className="text-right text-xs text-[var(--muted)]">
+            <p className="text-right text-xs text-(--muted)">
               {name.length}/50 characters
             </p>
           </div>
 
-          {/* Category type */}
+          
           <div className="space-y-2">
             <label
               htmlFor="category-type"
-              className="block text-sm font-semibold text-[var(--text)]"
+              className="block text-sm font-semibold text-(--text)"
             >
               Category type
             </label>
@@ -156,9 +156,9 @@ export default function CategoryModal({
             </select>
           </div>
 
-          {/* Color picker */}
+        
           <div className="space-y-3">
-            <label className="block text-sm font-semibold text-[var(--text)]">
+            <label className="block text-sm font-semibold text-(--text)">
               Choose a color
             </label>
 
@@ -172,7 +172,7 @@ export default function CategoryModal({
                   aria-pressed={color === item}
                   className={`flex h-9 w-9 items-center justify-center rounded-full transition hover:scale-110 ${
                     color === item
-                      ? "ring-2 ring-offset-2 ring-[var(--green)]"
+                      ? "ring-2 ring-offset-2 ring-(--green)"
                       : "ring-1 ring-black/10"
                   }`}
                   style={{
@@ -188,9 +188,9 @@ export default function CategoryModal({
             </div>
           </div>
 
-          {/* Preview */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
+        
+          <div className="rounded-xl border border-(--border) bg-(--surface-2) p-4">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-(--muted)">
               Category preview
             </p>
 
@@ -209,24 +209,24 @@ export default function CategoryModal({
                   />
                 </div>
 
-                <span className="truncate text-sm font-semibold text-[var(--text)]">
+                <span className="truncate text-sm font-semibold text-(--text)">
                   {name.trim() || "Category preview"}
                 </span>
               </div>
 
-              <span className="shrink-0 rounded-lg bg-[var(--surface)] px-3 py-1.5 text-xs font-medium capitalize text-[var(--muted)]">
+              <span className="shrink-0 rounded-lg bg-(--surface) px-3 py-1.5 text-xs font-medium capitalize text-(--muted)">
                 {type}
               </span>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] pt-5 sm:flex-row sm:justify-end">
+         
+          <div className="flex flex-col-reverse gap-3 border-t border-(--border) pt-5 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="rounded-xl border border-[var(--border)] px-5 py-2.5 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--surface-2)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl border border-(--border) px-5 py-2.5 text-sm font-semibold text-(--text) transition hover:bg-(--surface-2) disabled:cursor-not-allowed disabled:opacity-50"
             >
               Cancel
             </button>
@@ -234,7 +234,7 @@ export default function CategoryModal({
             <button
               type="submit"
               disabled={!name.trim() || name.trim().length < 2 || saving}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--green)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--green-dark)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-(--green) px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-(--green-dark) disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? (
                 <>

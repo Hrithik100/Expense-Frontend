@@ -310,7 +310,7 @@ export default function Transactions() {
           />
         </div>
 
-        {/* Desktop table */}
+     
         <div className="hidden overflow-x-auto sm:block">
           <table className="w-full min-w-155 border-collapse text-left whitespace-nowrap">
             <thead>
@@ -425,7 +425,7 @@ export default function Transactions() {
           </table>
         </div>
 
-        {/* Mobile transaction cards */}
+        
         <div className="grid gap-3 sm:hidden">
           {items.map((t) => (
             <div

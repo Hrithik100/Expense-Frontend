@@ -122,7 +122,7 @@ const DailyExpenses = () => {
     fetchDailyExpenses();
   }, [fetchDailyExpenses]);
 
-  // Group transactions by category
+
   const categoryGroups = useMemo<CategoryGroup[]>(() => {
     const groups = new Map<string, CategoryGroup>();
 
@@ -152,7 +152,7 @@ const DailyExpenses = () => {
       .sort((a, b) => b.total - a.total);
   }, [data]);
 
-  // Change selected date
+
   const changeDate = (days: number) => {
     const [year, month, day] = selectedDate.split("-").map(Number);
 
@@ -170,7 +170,7 @@ const DailyExpenses = () => {
 
   return (
     <div className="grid gap-5.75">
-      {/* Page Header */}
+      
       <section className="flex items-center justify-between gap-4.5 max-sm:flex-wrap">
         <div>
           <h1 className="mb-1.75 text-[25px] font-bold tracking-[-0.8px] text-(--text)">
@@ -196,7 +196,7 @@ const DailyExpenses = () => {
         </button>
       </section>
 
-      {/* Date Selector */}
+  
       <section className="flex items-center justify-between gap-4 rounded-[14px] border border-(--border) bg-(--surface) p-4.5 shadow-(--shadow) max-sm:flex-wrap">
         <div className="flex items-center gap-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[9px] bg-[#def8eb] text-[#0d9b70]">
@@ -258,7 +258,7 @@ const DailyExpenses = () => {
         </div>
       </section>
 
-      {/* Error */}
+ 
       {error && (
         <div className="flex items-center justify-between gap-3 rounded-[10px] border border-[#e35b5b]/30 bg-[#e35b5b]/5 p-3.5">
           <p className="text-xs text-[#e35b5b]">{error}</p>
@@ -273,7 +273,7 @@ const DailyExpenses = () => {
         </div>
       )}
 
-      {/* Summary Cards */}
+   
       <section className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
         {/* Total Expenses */}
         <div className="rounded-[14px] border border-(--border) bg-(--surface) p-4.5 shadow-(--shadow)">
@@ -298,7 +298,7 @@ const DailyExpenses = () => {
           </div>
         </div>
 
-        {/* Transaction Count */}
+   
         <div className="rounded-[14px] border border-(--border) bg-(--surface) p-4.5 shadow-(--shadow)">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -322,7 +322,7 @@ const DailyExpenses = () => {
         </div>
       </section>
 
-      {/* Expenses by Category */}
+     
       <section className="min-w-0 overflow-hidden rounded-[14px] border border-(--border) bg-(--surface) shadow-(--shadow)">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-(--border) px-4 py-3.5">
@@ -339,7 +339,7 @@ const DailyExpenses = () => {
           <TrendingDown size={17} className="text-[#0c9b74]" />
         </div>
 
-        {/* Loading */}
+  
         {loading ? (
           <div className="grid gap-5 p-5">
             {[1, 2, 3].map((item) => (
@@ -357,7 +357,7 @@ const DailyExpenses = () => {
             ))}
           </div>
         ) : categoryGroups.length === 0 ? (
-          /* Empty State */
+      
           <div className="grid justify-items-center px-5 py-12 text-center">
             <span className="grid h-12 w-12 place-items-center rounded-xl bg-[#def8eb] text-[#0d9b70]">
               <Receipt size={22} />
@@ -374,14 +374,14 @@ const DailyExpenses = () => {
           </div>
         ) : (
           <>
-            {/* Category Groups */}
+      
             <div className="divide-y divide-(--border)">
               {categoryGroups.map((group) => (
                 <div
                   key={group.category}
                   className="px-4 py-4"
                 >
-                  {/* Category Heading */}
+               
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-2">
                       <span
@@ -408,7 +408,7 @@ const DailyExpenses = () => {
                     </p>
                   </div>
 
-                  {/* Transaction Sub-items */}
+                
                   <div className="ml-1 mt-2.5 grid gap-3 border-l border-(--border) pl-3.5">
                     {group.transactions.map((transaction) => (
                       <div
@@ -435,7 +435,7 @@ const DailyExpenses = () => {
               ))}
             </div>
 
-            {/* Daily Total */}
+          
             <div className="flex items-center justify-between border-t border-(--border) bg-(--surface-2) px-4 py-3.5">
               <span className="text-[11px] font-bold text-(--text)">
                 Daily total

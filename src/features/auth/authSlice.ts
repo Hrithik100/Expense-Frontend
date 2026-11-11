@@ -94,7 +94,7 @@ const slice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // LOGIN
+   
     builder
       .addCase(login.pending, (state) => {
         state.status = "loading";
@@ -110,7 +110,7 @@ const slice = createSlice({
         state.error = String(action.payload || "Login failed");
       });
 
-    // REGISTER
+   
     builder
       .addCase(register.pending, (state) => {
         state.status = "loading";
@@ -128,7 +128,7 @@ const slice = createSlice({
         );
       });
 
-    // RESTORE SESSION
+  
     builder
       .addCase(restoreSession.pending, (state) => {
         state.initialized = false;
@@ -145,7 +145,7 @@ const slice = createSlice({
         state.user = null;
       });
 
-    // LOGOUT
+  
   builder
   .addCase(logout.fulfilled, (state) => {
     state.status = "unauthenticated";

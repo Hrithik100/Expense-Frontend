@@ -15,7 +15,7 @@ const initialState: CategoryState = {
   saving: false,
 };
 
-// GET categories
+
 export const fetchCategories = createAsyncThunk(
   "categories/fetch",
   async (_, { rejectWithValue }) => {
@@ -30,7 +30,7 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-// ADD category
+
 export const addCategory = createAsyncThunk(
   "categories/add",
   async (data: CategoryPayload, { rejectWithValue }) => {
@@ -45,7 +45,7 @@ export const addCategory = createAsyncThunk(
   }
 );
 
-// UPDATE category
+
 export const updateCategory = createAsyncThunk(
   "categories/update",
   async (
@@ -67,7 +67,7 @@ export const updateCategory = createAsyncThunk(
   }
 );
 
-// DELETE category
+
 export const deleteCategory = createAsyncThunk(
   "categories/delete",
   async (id: number, { rejectWithValue }) => {
@@ -94,7 +94,7 @@ const categorySlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // FETCH
+     
       .addCase(fetchCategories.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -110,7 +110,7 @@ const categorySlice = createSlice({
         );
       })
 
-      // ADD
+   
       .addCase(addCategory.pending, (state) => {
         state.saving = true;
         state.error = null;
@@ -126,7 +126,7 @@ const categorySlice = createSlice({
         );
       })
 
-      // UPDATE
+     
       .addCase(updateCategory.pending, (state) => {
         state.saving = true;
         state.error = null;
@@ -149,7 +149,6 @@ const categorySlice = createSlice({
         );
       })
 
-      // DELETE
       .addCase(deleteCategory.pending, (state) => {
         state.saving = true;
         state.error = null;

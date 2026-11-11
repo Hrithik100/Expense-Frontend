@@ -102,7 +102,7 @@ export default function Budgets() {
           </p>
         </div>
 
-        {/* Month selector */}
+      
         <label className="flex items-center gap-2.25 rounded-[9px] border border-(--border) bg-(--surface) px-2.75 py-2.25 text-(--muted)">
           <input
             aria-label="Budget month"
@@ -265,7 +265,7 @@ export default function Budgets() {
               </p>
             )}
 
-            {/* Submit */}
+        
             <button
               type="submit"
               disabled={busy || !categoryId || !amount || Number(amount) <= 0}

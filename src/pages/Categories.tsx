@@ -230,7 +230,7 @@ export default function Categories() {
         </div>
       )}
 
-      {/* Loading and category content */}
+   
       {status === "loading" ? (
         <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-(--border) bg-(--surface)">
           <Loader2 className="animate-spin text-(--green)" size={30} />
