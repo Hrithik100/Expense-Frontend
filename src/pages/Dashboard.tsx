@@ -94,7 +94,12 @@ export default function Dashboard() {
             aria-label="Select month"
             type="month"
             value={month}
-            onChange={(e) => setMonth(e.target.value)}
+            // onChange={(e) => setMonth(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value) {
+                setMonth(e.target.value);
+              }
+            }}
             className="min-w-0 border-0 bg-transparent text-xs text-(--text) outline-none"
           />
         </label>

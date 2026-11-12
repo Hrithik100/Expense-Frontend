@@ -1,11 +1,5 @@
-
 import { useEffect, useState } from "react";
-import {
-  Wallet,
-  CalendarDays,
-  TrendingUp,
-  AlertCircle,
-} from "lucide-react";
+import { Wallet, CalendarDays, TrendingUp, AlertCircle } from "lucide-react";
 import { api } from "../services/api";
 import { useAppSelector } from "../app/hooks";
 
@@ -38,9 +32,7 @@ const getLocalDate = (date: Date) => {
 const getCurrentMonth = () => {
   const now = new Date();
 
-  return `${now.getFullYear()}-${String(
-    now.getMonth() + 1,
-  ).padStart(2, "0")}`;
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 };
 
 export default function DailySpendingAllowance() {
@@ -66,10 +58,9 @@ export default function DailySpendingAllowance() {
           api.get<DashboardSummary>("/dashboard", {
             params: { month },
           }),
-          api.get<DailyExpensesResponse>(
-            "/transactions/daily-expenses",
-            { params: { date: today } },
-          ),
+          api.get<DailyExpensesResponse>("/transactions/daily-expenses", {
+            params: { date: today },
+          }),
         ]);
 
         if (!active) return;
@@ -109,10 +100,13 @@ export default function DailySpendingAllowance() {
   // is compared fairly against today's allowance.
   const balanceAtStartOfToday = monthlyBalance + todayExpenses;
 
+  // const dailyAllowance =
+  //   remainingDays > 0
+  //     ? Math.max(0, balanceAtStartOfToday) / remainingDays
+  //     : 0;
+
   const dailyAllowance =
-    remainingDays > 0
-      ? Math.max(0, balanceAtStartOfToday) / remainingDays
-      : 0;
+    daysInMonth > 0 ? Math.max(0, monthlyBalance) / daysInMonth : 0;
 
   const difference = dailyAllowance - todayExpenses;
 
@@ -132,8 +126,8 @@ export default function DailySpendingAllowance() {
           <h2 className="text-sm font-bold tracking-tight text-(--text)">
             Daily Spending Allowance
           </h2>
-          <p className="mt-1.5 text-[11px] text-(--muted)">
-            Based on your current month's income and expenses
+          <p className="mt-1 text-[10px] text-(--muted)">
+            Resets daily · Unused allowance does not carry forward
           </p>
         </div>
 
@@ -172,14 +166,10 @@ export default function DailySpendingAllowance() {
             </div>
 
             <div className="rounded-[10px] bg-(--surface-2) px-3.5 py-3">
-              <p className="text-[10px] text-(--muted)">
-                Monthly balance
-              </p>
+              <p className="text-[10px] text-(--muted)">Monthly balance</p>
               <strong
                 className={`mt-1 block text-sm font-bold ${
-                  monthlyBalance >= 0
-                    ? "text-[#0d9b70]"
-                    : "text-[#e35b5b]"
+                  monthlyBalance >= 0 ? "text-[#0d9b70]" : "text-[#e35b5b]"
                 }`}
               >
                 {money(monthlyBalance)}
@@ -225,18 +215,14 @@ export default function DailySpendingAllowance() {
 
           <div className="mt-4 grid grid-cols-2 gap-3 border-t border-(--border) pt-4">
             <div>
-              <p className="text-[10px] text-(--muted)">
-                Monthly income
-              </p>
+              <p className="text-[10px] text-(--muted)">Monthly income</p>
               <strong className="mt-1 block text-xs font-bold text-[#0d9b70]">
                 {money(income)}
               </strong>
             </div>
 
             <div>
-              <p className="text-[10px] text-(--muted)">
-                Monthly expenses
-              </p>
+              <p className="text-[10px] text-(--muted)">Monthly expenses</p>
               <strong className="mt-1 block text-xs font-bold text-(--text)">
                 {money(expenses)}
               </strong>
